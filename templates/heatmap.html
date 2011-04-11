@@ -1,14 +1,15 @@
 {% extends base.html %}
 
 {% block title %}
-  Heatmap
+  Heatmaps
 {% end %}
 
 {% block local_css %}
   <style type="text/css">
     html { height: 100% }
     body { height: 100%; margin: 0px; padding: 0px }
-    #map_canvas { height: 100%; margin-left: auto; margin-right: auto;}
+    #fire_map_canvas { height: 100%; margin-left: auto; margin-right: auto;}
+    #crime_map_canvas { height: 100%; margin-left: auto; margin-right: auto;}
   </style>
 {% end %}
 
@@ -18,22 +19,36 @@
   </script>
   <script type="text/javascript">
     function initialize() {
-      var latlng = new google.maps.LatLng(47.629, -122.330);
+      var seattle = new google.maps.LatLng(47.629, -122.330);
       var myOptions = {
         zoom: 13,
-        center: latlng,
+        center: seattle,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
-      var map = new google.maps.Map(document.getElementById("map_canvas"),
+      var fire_map = new google.maps.Map(document.getElementById("fire_map_canvas"),
           myOptions);
+
+      fire_layer = new google.maps.FusionTablesLayer(684602, {
+        heatmap: true
+      });
+      fire_layer.setMap(fire_map);
+
+      var crime_map = new google.maps.Map(document.getElementById("crime_map_canvas"),
+          myOptions);
+
+      crime_layer = new google.maps.FusionTablesLayer(684341, {
+        heatmap: true
+      });
+      fire_layer.setMap(crime_map);
     }
   </script>
 {% end %}
 
 {% block content %}
   <body onload="initialize()">
-    <h1>Heatmap</h1>
-    <div id="map_canvas" style="width:90%; height:90%"></div>
+    <h1>Heatmaps</h1>
+    <div id="fire_map_canvas" style="width:80%; height:40%"></div>
+    <div id="crime_map_canvas" style="width:80%; height:40%"></div>
   </body>
 {% end %}
 
