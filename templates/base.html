@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>CS194 Final Project - {% block title %}{% end %}</title>
+    <link rel="stylesheet" href="{{ static_url("project.css") }}" type="text/css" media="screen, projection" />
+    {% block local_css %}{% end %}
+    {% block local_js %}{% end %}
+  </head>
+  {% block content %} <body>DEFAULT CONTENT</body> {% end %}
+</html>
+
+
