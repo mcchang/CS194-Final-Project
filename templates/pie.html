@@ -1,0 +1,43 @@
+{% extends base.html %}
+
+{% block title %}
+  Pie Charts
+{% end %}
+
+{% block local_css %}
+  <style type="text/css">
+    #fig {
+      width: 1200px;
+      height: 600px;
+    }
+  </style>
+{% end %}
+
+{% block local_js %}
+  <script type="text/javascript" src="{{ static_url("protovis-3.2/protovis-r3.2.js") }}"></script>
+{% end %}
+
+{% block content %}
+  <body>
+    <div id="fig">
+    <script type="text/javascript+protovis">
+      /* DO PROTOVIS HERE */
+
+
+
+      /* Fetch Data from Server (Synchronously?) */
+      var neighborhood_data;
+      var req = new XMLHttpRequest();
+      req.open('GET', 'data/neighborhood_map.json', false);
+      req.send(null);
+      if (req.status == 200) {
+        console.log(req.responseText);
+        neighborhood_data = eval('(' + req.responseText + ')');
+        // drawVis(neighborhood_data);
+      }
+      else
+        console.log("Error loading page\n");
+    </script>
+    </div>
+  </body>
+{% end %}
