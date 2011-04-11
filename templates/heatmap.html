@@ -39,7 +39,7 @@
       crime_layer = new google.maps.FusionTablesLayer(684341, {
         heatmap: true
       });
-      fire_layer.setMap(crime_map);
+      crime_layer.setMap(crime_map);
     }
   </script>
 {% end %}
@@ -47,7 +47,9 @@
 {% block content %}
   <body onload="initialize()">
     <h1>Heatmaps</h1>
+    <h2>Fire</h2>
     <div id="fire_map_canvas" style="width:80%; height:40%"></div>
+    <h2>Crime</h2>
     <div id="crime_map_canvas" style="width:80%; height:40%"></div>
   </body>
 {% end %}
