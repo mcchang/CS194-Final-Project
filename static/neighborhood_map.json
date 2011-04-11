@@ -1,24 +1,26 @@
 {
   "meta" : {
     "view" : {
-      "id" : "82su-5fxf",
-      "name" : "My Neighborhood Map",
+      "id" : "8mth-ajrf",
+      "name" : "My Neighborhood Map No Location",
       "attribution" : "City of Seattle, My Neighborhood Map program",
       "attributionLink" : "http://www.seattle.gov/mnm",
       "averageRating" : 0,
       "category" : "Community",
-      "createdAt" : 1260481480,
+      "createdAt" : 1302506867,
       "description" : "Data set from My Neighborhood Map program.",
+      "displayType" : "table",
       "domainCName" : "",
+      "lastOpenedDate" : 1302506872,
       "numberOfComments" : 0,
-      "oid" : 296048,
+      "oid" : 315208,
       "rowsUpdatedAt" : 1281650653,
       "rowsUpdatedBy" : "pfbu-yuv5",
       "signed" : false,
       "tableId" : 215057,
       "totalTimesRated" : 0,
-      "viewCount" : 6288,
-      "viewLastModified" : 1301084062,
+      "viewCount" : 0,
+      "viewLastModified" : 1302506867,
       "viewType" : "tabular",
       "columns" : [ {
         "id" : -1,
@@ -77,11 +79,11 @@
         "renderTypeName" : "meta_data",
         "tableColumnId" : 0
       }, {
-        "id" : 2343231,
+        "id" : 2685923,
         "name" : "City Feature",
         "dataTypeName" : "text",
         "description" : "Type of City of Seattle feature, such as traffic cameras, parks, playfields, Neighborhood Service Centers, etc. ",
-        "position" : 2,
+        "position" : 1,
         "renderTypeName" : "text",
         "tableColumnId" : 1283205,
         "width" : 118,
@@ -153,11 +155,11 @@
           } ]
         }
       }, {
-        "id" : 2343232,
+        "id" : 2685924,
         "name" : "Common Name",
         "dataTypeName" : "text",
         "description" : "This is the commonly referred name of the feature. It may be a name of a building, a park, or a location",
-        "position" : 4,
+        "position" : 2,
         "renderTypeName" : "text",
         "tableColumnId" : 1283206,
         "width" : 270,
@@ -229,11 +231,11 @@
           } ]
         }
       }, {
-        "id" : 2343233,
+        "id" : 2685925,
         "name" : "Address",
         "dataTypeName" : "text",
         "description" : "Address is the most specific location information for a feature. It ranges from a building on a campus (like Cunningham Hall on the University of Washington campus, to an intersection, to a specific street address.",
-        "position" : 5,
+        "position" : 3,
         "renderTypeName" : "text",
         "tableColumnId" : 1283207,
         "width" : 300,
@@ -305,11 +307,11 @@
           } ]
         }
       }, {
-        "id" : 2343234,
+        "id" : 2685926,
         "name" : "Website",
         "dataTypeName" : "url",
         "description" : "This is the most recent known correct website address for the given feature. ",
-        "position" : 6,
+        "position" : 4,
         "renderTypeName" : "url",
         "tableColumnId" : 1283208,
         "width" : 415,
@@ -426,11 +428,11 @@
         },
         "subColumnTypes" : [ "url", "description" ]
       }, {
-        "id" : 2343235,
+        "id" : 2685927,
         "name" : "Longitude",
         "dataTypeName" : "number",
         "description" : "This is the longitude value. Lines of longitude run perpendicular to lines of latitude, and all pass through both poles.",
-        "position" : 7,
+        "position" : 5,
         "renderTypeName" : "number",
         "tableColumnId" : 1283209,
         "width" : 82,
@@ -504,11 +506,11 @@
           } ]
         }
       }, {
-        "id" : 2343236,
+        "id" : 2685928,
         "name" : "Latitude",
         "dataTypeName" : "number",
         "description" : "This is the latitude value. Lines of latitude are parallel to the equator.",
-        "position" : 8,
+        "position" : 6,
         "renderTypeName" : "number",
         "tableColumnId" : 1283210,
         "width" : 82,
@@ -585,171 +587,17 @@
           "precisionStyle" : "standard"
         }
       }, {
-        "id" : 2537910,
+        "id" : 2685929,
         "name" : "Location",
         "dataTypeName" : "location",
-        "position" : 9,
+        "position" : 7,
         "renderTypeName" : "location",
         "tableColumnId" : 1396231,
         "width" : 144,
-        "cachedContents" : {
-          "non_null" : 2081,
-          "smallest" : {
-            "machine_address" : "null",
-            "longitude" : -122.290868,
-            "latitude" : 47.612237
-          },
-          "null" : 0,
-          "largest" : {
-            "machine_address" : "null",
-            "longitude" : -122.340887,
-            "latitude" : 47.604845
-          },
-          "top" : [ {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.35795,
-              "latitude" : 47.636263
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.316698,
-              "latitude" : 47.64025
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.380585,
-              "latitude" : 47.553412
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.391114,
-              "latitude" : 47.536141
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.292901,
-              "latitude" : 47.624984
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.396012,
-              "latitude" : 47.531176
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.396012,
-              "latitude" : 47.531176
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.396012,
-              "latitude" : 47.531176
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.396012,
-              "latitude" : 47.531176
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.325084,
-              "latitude" : 47.62808
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.349301,
-              "latitude" : 47.620493
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.311817,
-              "latitude" : 47.619195
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.313601,
-              "latitude" : 47.665737
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.299178,
-              "latitude" : 47.645437
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.315151,
-              "latitude" : 47.586522
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.35727,
-              "latitude" : 47.61734
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.270061,
-              "latitude" : 47.55883
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.291624,
-              "latitude" : 47.705342
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.28006,
-              "latitude" : 47.718937
-            }
-          }, {
-            "count" : 1,
-            "item" : {
-              "machine_address" : "null",
-              "longitude" : -122.358699,
-              "latitude" : 47.695135
-            }
-          } ]
-        },
-        "subColumnTypes" : [ "human_address", "latitude", "longitude", "machine_address", "needs_recoding" ]
+        "subColumnTypes" : [ "human_address", "latitude", "longitude", "machine_address", "needs_recoding" ],
+        "flags" : [ "hidden" ]
       }, {
-        "id" : 2343229,
+        "id" : 2685931,
         "name" : "tags",
         "dataTypeName" : "tag",
         "position" : 3,
@@ -762,39 +610,35 @@
         "flags" : [ "hidden" ]
       } ],
       "grants" : [ {
-        "inherited" : false,
+        "inherited" : true,
         "type" : "viewer",
         "flags" : [ "public" ]
       } ],
       "metadata" : {
+        "availableDisplayTypes" : [ "table", "fatrow", "page" ],
         "rdfSubject" : "0",
         "rowIdentifier" : "0"
       },
       "owner" : {
-        "id" : "pfbu-yuv5",
-        "displayName" : "Department of Information Technology",
+        "id" : "3ge2-a5wg",
+        "displayName" : "aznm1ke31",
         "privacyControl" : "login",
-        "profileImageUrlLarge" : "/images/profile/3184/7575/Logo_thumb_large.gif",
-        "profileImageUrlMedium" : "/images/profile/3184/7575/Logo_thumb_thumb.gif",
-        "profileImageUrlSmall" : "/images/profile/3184/7575/Logo_thumb_tiny.gif",
-        "profileLastModified" : 1292004243,
-        "roleName" : "administrator",
-        "screenName" : "Department of Information Technology",
-        "rights" : [ "create_datasets", "edit_others_datasets", "edit_sdp", "edit_site_theme", "moderate_comments", "manage_users", "chown_datasets", "edit_nominations", "approve_nominations", "feature_items", "federations", "manage_stories", "manage_approval" ]
+        "profileLastModified" : 1302501123,
+        "screenName" : "aznm1ke31"
       },
       "query" : {
         "orderBys" : [ {
           "ascending" : true,
           "expression" : {
-            "columnId" : 2343231,
+            "columnId" : 2685923,
             "type" : "column"
           }
         } ]
       },
-      "rights" : [ "read" ],
+      "rights" : [ "read", "update_column", "update_view", "delete_view" ],
       "sortBys" : [ {
         "id" : 0,
-        "viewColumnId" : 2343231,
+        "viewColumnId" : 2685923,
         "flags" : [ "asc" ]
       } ],
       "tableAuthor" : {
@@ -808,8 +652,7 @@
         "roleName" : "administrator",
         "screenName" : "Department of Information Technology",
         "rights" : [ "create_datasets", "edit_others_datasets", "edit_sdp", "edit_site_theme", "moderate_comments", "manage_users", "chown_datasets", "edit_nominations", "approve_nominations", "feature_items", "federations", "manage_stories", "manage_approval" ]
-      },
-      "flags" : [ "default" ]
+      }
     }
   },
   "data" : [ [ 360, "6EC1DB8A-3A53-451B-BEB8-016230B7C168", 360, 1263313295, "386118", 1263313295, "386118", null, "Alternative Schools", "Madrona K-8", "1121 33rd Ave", [ "http://www.seattleschools.org/schools/madrona/", null ], "-122.290868", "47.612237", [ null, "47.612237", "-122.290868", null, false ], [ ] ]
@@ -2895,3 +2738,4 @@
 , [ 1939, "D27F4CE9-A27D-44F8-8849-EA7687CF6FAC", 1939, 1263313296, "386118", 1263313296, "386118", null, "Water Taxi", "Downton Seattle - Pier 55", null, [ "http://www.kingcounty.gov/transportation/kcdot/Marine/WaterTaxi.aspx", null ], "-122.340887", "47.604845", [ null, "47.604845", "-122.340887", null, false ], [ ] ]
  ]
 }
+
