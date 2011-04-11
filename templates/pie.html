@@ -19,6 +19,12 @@
     <div id="fig">
     <script type="text/javascript+protovis">
       function drawVis(neighborhood_data) {
+
+        /* Get the necessary data */
+        var features;
+        for (datum in neighborhood_data) {
+          var feature = datum[0][8];
+        }
         /* Sizing and scales. */
         var w = 400,
             h = 400,
@@ -49,14 +55,15 @@
       }
 
       /* Fetch Data from Server (Synchronously?) */
-      var neighborhood_data;
+      var features;
       var req = new XMLHttpRequest();
-      req.open('GET', 'data/neighborhood_map.json', false);
+      req.open('GET', 'data/neighborhood_features_counts.json', false);
       req.send(null);
       if (req.status == 200) {
-        console.log(req.responseText);
-        neighborhood_data = eval('(' + req.responseText + ')');
-        drawVis(neighborhood_data);
+         console.log(req.responseText);
+         features = eval('(' + req.responseText + ')');
+         // console.log(features.Landmarks);
+         drawVis(features);
       }
       else
         console.log("Error loading page\n");
