@@ -6,7 +6,7 @@
 
 {% block local_css %}
   <style type="text/css">
-    #fig { width: 600px; height: 600px }
+    #fig { width: 1000px; height: 1000px }
   </style>
 {% end %}
 
@@ -18,16 +18,17 @@
   <body>
     <div id="fig">
     <script type="text/javascript+protovis">
-      function drawVis(neighborhood_data) {
+      function drawVis(features) {
 
         /* Get the necessary data */
-        var features;
-        for (datum in neighborhood_data) {
-          var feature = datum[0][8];
+        var data = new Array();
+        for (feature in features) {
+          data.push(features[feature]);
         }
+        
         /* Sizing and scales. */
-        var w = 400,
-            h = 400,
+        var w = 1000,
+            h = 1000,
             r = w / 2,
             a = pv.Scale.linear(0, pv.sum(data)).range(0, 2 * Math.PI);
 
@@ -45,7 +46,7 @@
             .outerRadius(r)
             .angle(a)
             .event("mouseover", function() this.innerRadius(0))
-            .event("mouseout", function() this.innerRadius(r - 40))
+            .event("mouseout", function() this.innerRadius(r - 100))
           .anchor("center").add(pv.Label)
             .visible(function(d) d > .15)
             .textAngle(0)
