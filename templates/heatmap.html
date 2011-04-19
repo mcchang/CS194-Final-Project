@@ -25,6 +25,9 @@
   <script type="text/javascript"
       src="http://maps.google.com/maps/api/js?sensor=false">
   </script>
+  <script type="text/javascript"
+      src="{{ static_url("underscore/underscore.js") }}">
+  </script>
   <script type="text/javascript">
 
     function fetchCoords(data_endpoint) {
@@ -44,16 +47,20 @@
     function addMarker(position, map) {
       var marker = new google.maps.Marker({
           position: position,
-          animation: google.maps.ANIMATION.DROP,
+          animation: google.maps.Animation.DROP,
           map: map
       });
     }
 
-    function dropMarkers(positionArray) {
+    function addMarkerHelper(position, map) {
+      return function() {
+        addMarker(position, map);
+      }   
+    }
+
+    function dropMarkers(positionArray, map) {
       for (var i = 0; i < positionArray.length; i++) {
-        setTimeout(function () {
-            addMarker(positionArray[i], map);
-        }, i * 200);
+        setTimeout(addMarkerHelper(positionArray[i], map), i * 100);
       }
     }
 
@@ -62,35 +69,44 @@
       fire_coords = fetchCoords('data/fire_stations.json');
       police_coords = fetchCoords('data/police_stations.json');
 
+      // Make LatLng arrays
+      fire_latlng = _.map(fire_coords, function(coord) {
+          return new google.maps.LatLng(coord[0], coord[1]);
+      });
+      police_latlng = _.map(police_coords, function(coord) {
+          return new google.maps.LatLng(coord[0], coord[1]);
+      });
+
       var seattle = new google.maps.LatLng(47.629, -122.330);
       var mapOptions = {
-        zoom: 13,
+        zoom: 11,
         center: seattle,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
       };
+
       var fire_map = new google.maps.Map(document.getElementById("fire_map_canvas"),
           mapOptions);
-
-      fire_layer = new google.maps.FusionTablesLayer(684602, {
+      var fire_layer = new google.maps.FusionTablesLayer(684602, {
         heatmap: true
       });
       fire_layer.setMap(fire_map);
+      dropMarkers(fire_latlng, fire_map);
 
       var crime_map = new google.maps.Map(document.getElementById("crime_map_canvas"),
           mapOptions);
-
-      crime_layer = new google.maps.FusionTablesLayer(684341, {
+      var crime_layer = new google.maps.FusionTablesLayer(684341, {
         heatmap: true
       });
       crime_layer.setMap(crime_map);
+      dropMarkers(police_latlng, crime_map);
 
       // Markers
-      var marker = new google.maps.Marker({
-           position: seattle,
-           title: "Hello World!",
-           animation: google.maps.Animation.DROP,
-           map: crime_map
-      });
+      // var marker = new google.maps.Marker({
+      //      position: seattle,
+      //      title: "Hello World!",
+      //      animation: google.maps.Animation.DROP,
+      //      map: crime_map
+      // });
       // marker.setMap(crime_map);
     }
   </script>
