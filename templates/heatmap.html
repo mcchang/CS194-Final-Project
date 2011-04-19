@@ -44,23 +44,24 @@
         console.log("Error loading page\n");
     }
 
-    function addMarker(position, map) {
+    function addMarker(position, map, image) {
       var marker = new google.maps.Marker({
           position: position,
           animation: google.maps.Animation.DROP,
-          map: map
+          map: map,
+          icon: image
       });
     }
 
-    function addMarkerHelper(position, map) {
+    function addMarkerHelper(position, map, image) {
       return function() {
-        addMarker(position, map);
+        addMarker(position, map, image);
       }   
     }
 
-    function dropMarkers(positionArray, map) {
+    function dropMarkers(positionArray, map, image) {
       for (var i = 0; i < positionArray.length; i++) {
-        setTimeout(addMarkerHelper(positionArray[i], map), i * 100);
+        setTimeout(addMarkerHelper(positionArray[i], map, image), i * 100);
       }
     }
 
@@ -90,7 +91,8 @@
         heatmap: true
       });
       fire_layer.setMap(fire_map);
-      dropMarkers(fire_latlng, fire_map);
+      dropMarkers(fire_latlng, fire_map, '{{ static_url("images/fire_station.png") }}');
+
 
       var crime_map = new google.maps.Map(document.getElementById("crime_map_canvas"),
           mapOptions);
@@ -98,16 +100,7 @@
         heatmap: true
       });
       crime_layer.setMap(crime_map);
-      dropMarkers(police_latlng, crime_map);
-
-      // Markers
-      // var marker = new google.maps.Marker({
-      //      position: seattle,
-      //      title: "Hello World!",
-      //      animation: google.maps.Animation.DROP,
-      //      map: crime_map
-      // });
-      // marker.setMap(crime_map);
+      dropMarkers(police_latlng, crime_map, '{{ static_url("images/police_station.png") }}');
     }
   </script>
 {% end %}
