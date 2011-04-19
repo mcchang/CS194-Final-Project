@@ -8,8 +8,16 @@
   <style type="text/css">
     html { height: 100% }
     body { height: 100%; margin: 0px; padding: 0px }
-    #fire_map_canvas { height: 100%; margin-left: auto; margin-right: auto;}
-    #crime_map_canvas { height: 100%; margin-left: auto; margin-right: auto;}
+    #fire_map_canvas { 
+      width: 80%;
+      height: 40%;
+      margin-left: auto;
+      margin-right: auto;}
+    #crime_map_canvas {
+      width: 80%;
+      height: 40%;
+      margin-left: auto;
+      margin-right: auto;}
   </style>
 {% end %}
 
@@ -17,29 +25,89 @@
   <script type="text/javascript"
       src="http://maps.google.com/maps/api/js?sensor=false">
   </script>
+  <script type="text/javascript"
+      src="{{ static_url("underscore/underscore.js") }}">
+  </script>
   <script type="text/javascript">
-    function initialize() {
-      var seattle = new google.maps.LatLng(47.629, -122.330);
-      var myOptions = {
-        zoom: 13,
-        center: seattle,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      var fire_map = new google.maps.Map(document.getElementById("fire_map_canvas"),
-          myOptions);
 
-      fire_layer = new google.maps.FusionTablesLayer(684602, {
+    function fetchCoords(data_endpoint) {
+      var features;
+      var req = new XMLHttpRequest();
+      req.open('GET', data_endpoint, false);
+      req.send(null);
+      if (req.status == 200) {
+         console.log(req.responseText);
+         coords = eval('(' + req.responseText + ')');
+         return coords;
+      }
+      else
+        console.log("Error loading page\n");
+    }
+
+    function addMarker(position, map) {
+      var marker = new google.maps.Marker({
+          position: position,
+          animation: google.maps.Animation.DROP,
+          map: map
+      });
+    }
+
+    function addMarkerHelper(position, map) {
+      return function() {
+        addMarker(position, map);
+      }   
+    }
+
+    function dropMarkers(positionArray, map) {
+      for (var i = 0; i < positionArray.length; i++) {
+        setTimeout(addMarkerHelper(positionArray[i], map), i * 100);
+      }
+    }
+
+    function initialize() {
+      // Load position data from json...
+      fire_coords = fetchCoords('data/fire_stations.json');
+      police_coords = fetchCoords('data/police_stations.json');
+
+      // Make LatLng arrays
+      fire_latlng = _.map(fire_coords, function(coord) {
+          return new google.maps.LatLng(coord[0], coord[1]);
+      });
+      police_latlng = _.map(police_coords, function(coord) {
+          return new google.maps.LatLng(coord[0], coord[1]);
+      });
+
+      var seattle = new google.maps.LatLng(47.629, -122.330);
+      var mapOptions = {
+        zoom: 11,
+        center: seattle,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+      };
+
+      var fire_map = new google.maps.Map(document.getElementById("fire_map_canvas"),
+          mapOptions);
+      var fire_layer = new google.maps.FusionTablesLayer(684602, {
         heatmap: true
       });
       fire_layer.setMap(fire_map);
+      dropMarkers(fire_latlng, fire_map);
 
       var crime_map = new google.maps.Map(document.getElementById("crime_map_canvas"),
-          myOptions);
-
-      crime_layer = new google.maps.FusionTablesLayer(684341, {
+          mapOptions);
+      var crime_layer = new google.maps.FusionTablesLayer(684341, {
         heatmap: true
       });
       crime_layer.setMap(crime_map);
+      dropMarkers(police_latlng, crime_map);
+
+      // Markers
+      // var marker = new google.maps.Marker({
+      //      position: seattle,
+      //      title: "Hello World!",
+      //      animation: google.maps.Animation.DROP,
+      //      map: crime_map
+      // });
+      // marker.setMap(crime_map);
     }
   </script>
 {% end %}
@@ -48,8 +116,8 @@
   <body onload="initialize()">
     <h1>Heatmaps</h1>
     <h2>Fire</h2>
-    <div id="fire_map_canvas" style="width:80%; height:40%"></div>
+    <div id="fire_map_canvas"></div>
     <h2>Crime</h2>
-    <div id="crime_map_canvas" style="width:80%; height:40%"></div>
+    <div id="crime_map_canvas"></div>
   </body>
 {% end %}
