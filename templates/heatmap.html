@@ -8,8 +8,16 @@
   <style type="text/css">
     html { height: 100% }
     body { height: 100%; margin: 0px; padding: 0px }
-    #fire_map_canvas { height: 100%; margin-left: auto; margin-right: auto;}
-    #crime_map_canvas { height: 100%; margin-left: auto; margin-right: auto;}
+    #fire_map_canvas { 
+      width: 80%;
+      height: 40%;
+      margin-left: auto;
+      margin-right: auto;}
+    #crime_map_canvas {
+      width: 80%;
+      height: 40%;
+      margin-left: auto;
+      margin-right: auto;}
   </style>
 {% end %}
 
@@ -20,13 +28,13 @@
   <script type="text/javascript">
     function initialize() {
       var seattle = new google.maps.LatLng(47.629, -122.330);
-      var myOptions = {
+      var mapOptions = {
         zoom: 13,
         center: seattle,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
       };
       var fire_map = new google.maps.Map(document.getElementById("fire_map_canvas"),
-          myOptions);
+          mapOptions);
 
       fire_layer = new google.maps.FusionTablesLayer(684602, {
         heatmap: true
@@ -34,7 +42,7 @@
       fire_layer.setMap(fire_map);
 
       var crime_map = new google.maps.Map(document.getElementById("crime_map_canvas"),
-          myOptions);
+          mapOptions);
 
       crime_layer = new google.maps.FusionTablesLayer(684341, {
         heatmap: true
@@ -48,8 +56,8 @@
   <body onload="initialize()">
     <h1>Heatmaps</h1>
     <h2>Fire</h2>
-    <div id="fire_map_canvas" style="width:80%; height:40%"></div>
+    <div id="fire_map_canvas"></div>
     <h2>Crime</h2>
-    <div id="crime_map_canvas" style="width:80%; height:40%"></div>
+    <div id="crime_map_canvas"></div>
   </body>
 {% end %}
