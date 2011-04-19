@@ -1,3 +1,4 @@
 static/*.swp
 *.swp
 templates/*.swp
+static/images/*.pxi
