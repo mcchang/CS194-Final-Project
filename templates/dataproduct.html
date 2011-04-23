@@ -10,7 +10,12 @@
     body { height: 100%; margin: 0px; padding: 0px }
     #map_canvas { 
       width: 85%;
-      height: 85%;
+      height: 70%;
+      margin-left: auto;
+      margin-right: auto;}
+    #directions_panel { 
+      width: 85%;
+      height: 25%;
       margin-left: auto;
       margin-right: auto;}
   </style>
@@ -44,6 +49,7 @@
           mapOptions);
       directionsDisplay = new google.maps.DirectionsRenderer();
       directionsDisplay.setMap(map);
+      directionsDisplay.setPanel(document.getElementById("directions_panel"));
 
       var request = {
         origin: "Seattle, WA",
@@ -66,6 +72,7 @@
            directionsDisplay.setDirections(result);
          }
          else {
+           // TODO: log this on the screen somehow
            console.log(status);
          }
       });
@@ -78,5 +85,6 @@
   <body onload="initialize()">
     <h1>Dispatch Directions</h1>
     <div id="map_canvas"></div>
+    <div id="directions_panel"></div>
   </body>
 {% end %}
