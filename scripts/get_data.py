@@ -19,11 +19,11 @@ fireWriter = csv.writer(fire_output, delimiter=' ', quoting=csv.QUOTE_MINIMAL)
 fireWriter.writerow(['location', 'distance', 'crime_count'])
 
 fireDateWriter = csv.writer(fire_day_of_week, delimiter=' ', quoting=csv.QUOTE_MINIMAL)
-fireDateWriter.writerow(['type', 'dayOfWeek', 'location'])
+fireDateWriter.writerow(['type', 'dayOfWeek', 'location', 'distance', 'count'])
 
 
 crimeDateWriter = csv.writer(crime_day_of_week, delimiter=' ', quoting=csv.QUOTE_MINIMAL)
-crimeDateWriter.writerow(['type', 'dayOfWeek', 'location'])
+crimeDateWriter.writerow(['type', 'dayOfWeek', 'location', 'distance', 'count'])
 
 
 crime_locations = []
@@ -41,30 +41,24 @@ for line in crime_file:
     args = line.split(',')
     crime_loc = args[-1].split()
     if (crime_loc[0] != 'Location'):
-        event_date = args[-2].split('/')
-        day = datetime.date(int(event_date[2]), int(event_date[0]), int(event_date[1])).weekday()
         crime_tuple = (float(crime_loc[0]),float(crime_loc[1]))
         crime_locations.append(crime_tuple)
         if crime_tuple in crime_counts:
             crime_counts[crime_tuple] = crime_counts[crime_tuple] + 1
         else:
             crime_counts[crime_tuple] = 1
-        crimeDateWriter.writerow([args[0], day, crime_tuple])
 
 #get the counts for fire rates per location
 for line in fire_file:
     args = line.split(',')
     fire_loc = args[-1].split()
     if (len(fire_loc)!= 0 and fire_loc[0] != 'Location'):
-        event_date = args[-2].split('/')
-        day = datetime.date(int(event_date[2]), int(event_date[0]), int(event_date[1])).weekday()
 	fire_tuple = (float(fire_loc[0]), float(fire_loc[1]))
 	fire_locations.append(fire_tuple)
 	if fire_tuple in fire_counts:
 	    fire_counts[fire_tuple] = fire_counts[fire_tuple] + 1
 	else:
 	    fire_counts[fire_tuple] = 1
-        fireDateWriter.writerow([args[0], day, fire_tuple])
 
 #add to the police stations array each of the locations for the police stations
 for line in file:
@@ -104,10 +98,33 @@ for fire in fire_locations:
                 distance = new_dist
         fire_distances[fire] = distance
     distance = 'inf'
+crime_file = open('/Users/karthikj/Documents/CS194/project/seattle/static/police_calls_cleaned.csv')
 
 #figure out the day of the week that the crime happened
+for line in crime_file:
+    args = line.split(',')
+    crime_loc = args[-1].split()
+    if (crime_loc[0] != 'Location'):
+        event_date = args[-2].split('/')
+        day = datetime.date(int(event_date[2]), int(event_date[0]), int(event_date[1])).weekday()
+        crime_tuple = (float(crime_loc[0]),float(crime_loc[1]))
+        distance = crime_distances[crime_tuple]
+        count = crime_counts[crime_tuple]
+        crimeDateWriter.writerow([args[0], day, crime_tuple, distance, count])
 
+fire_file = open('/Users/karthikj/Documents/CS194/project/seattle/static/fire_calls_cleaned.csv')
 
+#figure out eh day of the week the fire happened
+for line in fire_file:
+    args = line.split(',')
+    fire_loc = args[-1].split()
+    if (len(fire_loc)!= 0 and fire_loc[0] != 'Location'):
+        event_date = args[-2].split('/')
+        day = datetime.date(int(event_date[2]), int(event_date[0]), int(event_date[1])).weekday()
+	fire_tuple = (float(fire_loc[0]), float(fire_loc[1]))
+	distance =fire_distances[fire_tuple]
+        count = fire_counts[fire_tuple]
+        fireDateWriter.writerow([args[0], day, fire_tuple, distance, count])
 
 for key in crime_distances.iterkeys():
     crimeWriter.writerow([key, crime_distances[key], crime_counts[key]])
