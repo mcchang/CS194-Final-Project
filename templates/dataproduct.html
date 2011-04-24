@@ -34,6 +34,12 @@
     var directionsService = new google.maps.DirectionsService();
     var map;
 
+    function reset_map() {
+      var blank_result = new Object();
+      blank_result.routes = new Array();
+      directionsDisplay.setDirections(blank_result);
+    }
+
     function initialize() {
       // TODO: chooser for start fire station (or maybe change dynamically
       // based on sources
@@ -85,6 +91,7 @@
   <body onload="initialize()">
     <h1>Dispatch Directions</h1>
     <div id="map_canvas"></div>
+    <button type="reset" onclick="reset_map()">Reset</button>
     <div id="directions_panel"></div>
   </body>
 {% end %}
