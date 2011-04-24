@@ -45,7 +45,6 @@
     var distances = new Array();
     var seattle = new google.maps.LatLng(47.629, -122.330);
 
-    // TODO: get location of closest fire station in csv/json?
     function Incident(location, distance, incident, dayOfWeek) {
       this.location = location;
       this.distance = distance;
@@ -172,10 +171,8 @@
       }
       numPoliceStations = policeStations.length; 
 
-      // var closestStation;
       closestDistance = Number.MAX_VALUE;
-      distances = [];
-      //var distances = new Array();
+      distances.length = 0;
 
       var getClosestSleeper = _.after(numPoliceStations, getClosestSleeperCallback);
       _.each(policeStations, function(station, index) {
@@ -187,6 +184,7 @@
             getClosestSleeper();
           }
           else {
+            // TODO: log this on the screen somehow
             console.log(status);
           }
         });
@@ -199,23 +197,19 @@
           map: map
       });
       markers.push(marker);
-      // map.setCenter(location);
 
       if (incidents.length == 0) {
-        // TODO: push/add stuff in order of priority (need to determine)
         newIncident = new Incident(location, 5, "hate crime", "monday");
         incidents.push(newIncident);
         getClosestPoliceStation(location);
       }
       else {
+        // TODO: push/add stuff in order of priority (need to determine)
         console.log("IMPLEMENT ME");
       }
     }
 
     function initialize() {
-      // TODO: chooser for start fire station (or maybe change dynamically
-      // based on sources
-
 
       var mapOptions = {
         zoom: 11,
@@ -226,7 +220,7 @@
       map = new google.maps.Map(document.getElementById("map_canvas"),
           mapOptions);
 
-      // TODO: load fire stations too?
+      // TODO: load fire stations too
       policeCoords = fetchCoords('data/police_stations.json');
       policeStations = _.map(policeCoords, function(coord) {
           return new google.maps.LatLng(coord[0], coord[1]);
