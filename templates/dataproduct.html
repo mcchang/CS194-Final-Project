@@ -41,7 +41,7 @@
     var policeStations;
     var closestStation;
     var closestDistance;
-    var distances;
+    var distances = new Array();
 
     // TODO: get location of closest fire station in csv/json?
     function Incident(location, distance, incident, dayOfWeek) {
@@ -49,6 +49,10 @@
       this.distance = distance;
       this.incident = incident;
       this.dayOfWeek = dayOfWeek;
+    }
+
+    Array.prototype.sortStationsByDistance = function() {
+      return this.sort(function(a,b) { return a.distance - b.distance; });
     }
 
     // TODO: move this stuff into another js file http://www.dustindiaz.com/namespace-your-javascript/
@@ -142,73 +146,48 @@
          }
       });
     }
+
+    //function addIncidentCallback() {
+    //  console.log(distances);
+    //  console.log("done");
+    //}
     
-    function closestPoliceStation(location) {
+    function getClosestPoliceStation(location) {
+      function getClosestSleeperCallback() {
+        console.log("done");
+        distances.sortStationsByDistance();
+        console.log(distances);
+        var closestStation = distances[0].station;
+        updateDirections(closestStation, location, {});
+      }
       numPoliceStations = policeStations.length; 
 
       // var closestStation;
       closestDistance = Number.MAX_VALUE;
-      distances.clear();
+      distances = [];
       //var distances = new Array();
 
-      // function getClosest() {
-      //   // distances.sort();
-      //   // return distances[0];
-      //   console.log("here");
-      //   return closestStation;
-      // }
-      // var getClosestSleeper = _.after(numPoliceStations, getClosest);
-      // _.each(policeStations, function(station) {
-      //   var request = getDirectionsRequest(station, location, {});
-      //   directionsService.route(request, function(result, status) {
-      //     if (status == google.maps.DirectionsStatus.OK) {
-      //       var distance = result.routes[0].legs[0].distance.value;
-      //       if (distance < closestDistance) {
-      //         closestDistance = distance;
-      //         closestStation = request.origin;
-      //       }
-      //       // console.log("distance: " + distance);
-      //     }
-      //     else {
-      //       console.log(status);
-      //     }
-      //   });
-      // });
-      // TODO: concurrency issues? (asynch)
-      // for (var i = 0; i < numPoliceStations; i++) {
-      //   var curStation = policeStations[i];
-      //   var distance = getDistance(curStation, location, {});
-      //   console.log("distance: " + distance);
-      //   if (distance < closestDistance) {
-      //     console.log("in here");
-      //     closestDistance = distance;
-      //     closestStation = curStation;
-      //   }
-      // }
-      // for (var i = 0; i < numPoliceStations; i++) {
-      //   var request = getDirectionsRequest(policeStations[i], location, {});
-      //   directionsService.route(request, function(result, status) {
-      //     if (status == google.maps.DirectionsStatus.OK) {
-      //       var distance = result.routes[0].legs[0].distance.value;
-      //       if (distance < closestDistance) {
-      //         closestDistance = distance;
-      //         closestStation = request.origin;
-      //       }
-      //       // console.log("distance: " + distance);
-      //     }
-      //     else {
-      //       console.log(status);
-      //     }
-      //   });
-      // }
-      // console.log(distances);
-      // while (distances.length < numPoliceStations) 
-      //   // $.noop();
-      //   console.log("SUP");
-      // console.log("done2");
-      // distances.sort();
-      // console.log(distances);
-      // return distances[0];
+      var getClosestSleeper = _.after(numPoliceStations, getClosestSleeperCallback);
+      _.each(policeStations, function(station, index) {
+        var request = getDirectionsRequest(station, location, {});
+        directionsService.route(request, function(result, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            var distance = result.routes[0].legs[0].distance.value;
+            distances[index] = { distance: distance, station: station };
+            console.log("hello");
+            console.log(distances);
+            getClosestSleeper();
+            // if (distance < closestDistance) {
+            //   closestDistance = distance;
+            //   closestStation = request.origin;
+            // }
+            // console.log("distance: " + distance);
+          }
+          else {
+            console.log(status);
+          }
+        });
+      });
     }
 
     function addIncident(location, map) {
@@ -217,20 +196,22 @@
           map: map
       });
       // map.setCenter(location);
+
       if (incidents.length == 0) {
         // TODO: push/add stuff in order of priority (need to determine)
         newIncident = new Incident(location, 5, "hate crime", "monday");
         incidents.push(newIncident);
-        closestPoliceStation = closestPoliceStation(location);
-        console.log("closest station");
-        console.log(closestPoliceStation);
-        updateDirections(closestPoliceStation, location, {});
+        getClosestPoliceStation(location);
+        // closestPoliceStation = closestPoliceStation(location);
+        // console.log("closest station");
+        // console.log(closestPoliceStation);
+        // updateDirections(closestPoliceStation, location, {});
       }
       else {
         console.log("IMPLEMENT ME");
       }
     }
-    
+
     function initialize() {
       // TODO: chooser for start fire station (or maybe change dynamically
       // based on sources
