@@ -56,6 +56,10 @@
       return this.sort(function(a,b) { return a.distance - b.distance; });
     }
 
+    Array.prototype.sortIncidentsByPriorityDescending = function() {
+      return this.sort(function(a,b) { return a.priority - b.priority; });
+    }
+
     // TODO: move this stuff into another js file http://www.dustindiaz.com/namespace-your-javascript/
     function fetchCoords(data_endpoint) {
       var features;
@@ -118,7 +122,7 @@
       if (options['waypoints'])
         waypoints = _.map(options['waypoints'], function(wp) {
             return { 
-              location: new google.maps.LatLng(wp[0], wp[1]),
+              location: wp,// new google.maps.LatLng(wp[0], wp[1]),
               stopover: true
             };
         });
@@ -163,20 +167,28 @@
       });
     }
 
-    function getClosestPoliceStation(location) {
+    function getNewDirectionsForIncidents(incidents) {
+
+      var incidentLocations = _.map(incidents, function(incident) {
+          return incident.location;
+          }
+      );
+      var firstIncidentLoc = incidentLocations[0];
+      var lastIncidentLoc = incidentLocations[incidentLocations.length - 1];
+      var waypoints = incidentLocations.slice(0, incidentLocations.length - 1);
+      // var waypoints = [ seattle ];
+
       function getClosestSleeperCallback() {
         distances.sortStationsByDistance();
         var closestStation = distances[0].station;
-        updateDirections(closestStation, location, {});
+        updateDirections(closestStation, lastIncidentLoc, {waypoints: waypoints});
       }
-      numPoliceStations = policeStations.length; 
-
-      closestDistance = Number.MAX_VALUE;
+      var getClosestSleeper = _.after(policeStations.length, getClosestSleeperCallback);
+      
       distances.length = 0;
 
-      var getClosestSleeper = _.after(numPoliceStations, getClosestSleeperCallback);
       _.each(policeStations, function(station, index) {
-        var request = getDirectionsRequest(station, location, {});
+        var request = getDirectionsRequest(station, firstIncidentLoc, {});
         directionsService.route(request, function(result, status) {
           if (status == google.maps.DirectionsStatus.OK) {
             var distance = result.routes[0].legs[0].distance.value;
@@ -197,16 +209,10 @@
           map: map
       });
       markers.push(marker);
-
-      if (incidents.length == 0) {
-        newIncident = new Incident(location, 5, "hate crime", "monday");
-        incidents.push(newIncident);
-        getClosestPoliceStation(location);
-      }
-      else {
-        // TODO: push/add stuff in order of priority (need to determine)
-        console.log("IMPLEMENT ME");
-      }
+      var newIncident = new Incident(location, 5, "hate crime", "monday");
+      incidents.push(newIncident);
+      incidents.sortIncidentsByPriorityDescending();
+      getNewDirectionsForIncidents(incidents);
     }
 
     function initialize() {
