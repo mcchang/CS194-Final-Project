@@ -28,6 +28,9 @@
   <script type="text/javascript"
       src="{{ static_url("underscore/underscore.js") }}">
   </script>
+  <script type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js">
+  </script>
   <script type="text/javascript">
 
     var directionsDisplay;
@@ -36,6 +39,9 @@
     var incidents = new Array();
     var fireStations;
     var policeStations;
+    var closestStation;
+    var closestDistance;
+    var distances;
 
     // TODO: get location of closest fire station in csv/json?
     function Incident(location, distance, incident, dayOfWeek) {
@@ -139,25 +145,70 @@
     
     function closestPoliceStation(location) {
       numPoliceStations = policeStations.length; 
-      console.log(policeStations);
-      console.log("num police stations: " + numPoliceStations)
 
-      var closestStation;
-      var closestDistance = Number.MAX_VALUE;
-      var distances = new Array(numPoliceStations);
+      // var closestStation;
+      closestDistance = Number.MAX_VALUE;
+      distances.clear();
+      //var distances = new Array();
 
+      // function getClosest() {
+      //   // distances.sort();
+      //   // return distances[0];
+      //   console.log("here");
+      //   return closestStation;
+      // }
+      // var getClosestSleeper = _.after(numPoliceStations, getClosest);
+      // _.each(policeStations, function(station) {
+      //   var request = getDirectionsRequest(station, location, {});
+      //   directionsService.route(request, function(result, status) {
+      //     if (status == google.maps.DirectionsStatus.OK) {
+      //       var distance = result.routes[0].legs[0].distance.value;
+      //       if (distance < closestDistance) {
+      //         closestDistance = distance;
+      //         closestStation = request.origin;
+      //       }
+      //       // console.log("distance: " + distance);
+      //     }
+      //     else {
+      //       console.log(status);
+      //     }
+      //   });
+      // });
       // TODO: concurrency issues? (asynch)
-      for (var i = 0; i < numPoliceStations; i++) {
-        var curStation = policeStations[i];
-        var distance = getDistance(curStation, location, {});
-        console.log("distance: " + distance);
-        if (distance < closestDistance) {
-          console.log("in here");
-          closestDistance = distance;
-          closestStation = curStation;
-        }
-      }
-      return closestStation;
+      // for (var i = 0; i < numPoliceStations; i++) {
+      //   var curStation = policeStations[i];
+      //   var distance = getDistance(curStation, location, {});
+      //   console.log("distance: " + distance);
+      //   if (distance < closestDistance) {
+      //     console.log("in here");
+      //     closestDistance = distance;
+      //     closestStation = curStation;
+      //   }
+      // }
+      // for (var i = 0; i < numPoliceStations; i++) {
+      //   var request = getDirectionsRequest(policeStations[i], location, {});
+      //   directionsService.route(request, function(result, status) {
+      //     if (status == google.maps.DirectionsStatus.OK) {
+      //       var distance = result.routes[0].legs[0].distance.value;
+      //       if (distance < closestDistance) {
+      //         closestDistance = distance;
+      //         closestStation = request.origin;
+      //       }
+      //       // console.log("distance: " + distance);
+      //     }
+      //     else {
+      //       console.log(status);
+      //     }
+      //   });
+      // }
+      // console.log(distances);
+      // while (distances.length < numPoliceStations) 
+      //   // $.noop();
+      //   console.log("SUP");
+      // console.log("done2");
+      // distances.sort();
+      // console.log(distances);
+      // return distances[0];
     }
 
     function addIncident(location, map) {
