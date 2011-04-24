@@ -1,0 +1,14 @@
+{% extends base.html %}
+
+{% block title %}
+  Plots
+{% end %}
+
+{% block content %}
+  <body>
+    <h1>Plots</h1>
+    {% for plot in plots %}
+      <img src="{{ plot }}" />
+    {% end %}
+  </body>
+{% end %}

@@ -29,8 +29,17 @@ class DataHandler(tornado.web.RequestHandler):
         data_file.close()
 
 
+class PlotHandler(tornado.web.RequestHandler):
+    def get(self):
+        data_filepath = os.path.join(settings["static_path"], "regression")
+        plots = os.listdir(data_filepath)
+        plots = [os.path.join(data_filepath, plot) for plot in plots]
+        self.render("plots.html", plots=plots)
+
+
 application = tornado.web.Application([
     (r"/", MainHandler),
+    (r"/plots", PlotHandler),
     (r"/data/.+\.json", DataHandler),
     (r"/.+", VisHandler)
 ], **settings)
