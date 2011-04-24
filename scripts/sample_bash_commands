@@ -1,0 +1,4 @@
+# Some samples of bash commands we used to pare down the data and reorganize it better for our needs
+
+# Counts up how many of each type of neighborhood feature there are.
+cat neighborhood_map.csv | cut -d',' -f1 | uniq -c | awk '{ print $2, $3, $4, $5  ":", $1 }' > neighborhood_features_counts 
