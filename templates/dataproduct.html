@@ -147,16 +147,9 @@
       });
     }
 
-    //function addIncidentCallback() {
-    //  console.log(distances);
-    //  console.log("done");
-    //}
-    
     function getClosestPoliceStation(location) {
       function getClosestSleeperCallback() {
-        console.log("done");
         distances.sortStationsByDistance();
-        console.log(distances);
         var closestStation = distances[0].station;
         updateDirections(closestStation, location, {});
       }
@@ -174,14 +167,7 @@
           if (status == google.maps.DirectionsStatus.OK) {
             var distance = result.routes[0].legs[0].distance.value;
             distances[index] = { distance: distance, station: station };
-            console.log("hello");
-            console.log(distances);
             getClosestSleeper();
-            // if (distance < closestDistance) {
-            //   closestDistance = distance;
-            //   closestStation = request.origin;
-            // }
-            // console.log("distance: " + distance);
           }
           else {
             console.log(status);
@@ -202,10 +188,6 @@
         newIncident = new Incident(location, 5, "hate crime", "monday");
         incidents.push(newIncident);
         getClosestPoliceStation(location);
-        // closestPoliceStation = closestPoliceStation(location);
-        // console.log("closest station");
-        // console.log(closestPoliceStation);
-        // updateDirections(closestPoliceStation, location, {});
       }
       else {
         console.log("IMPLEMENT ME");
@@ -242,31 +224,6 @@
       directionsDisplay.setMap(map);
       directionsDisplay.setPanel(document.getElementById("directions_panel"));
 
-      // var request = {
-      //   origin: "Seattle, WA",
-      //   destination: "Bellevue, WA",
-      //   waypoints: [
-      //     {
-      //       location:"Shoreline, WA", 
-      //       stopover:true
-      //     },{
-      //       location:"Kirkland, WA",
-      //       stopover:true
-      //     }],
-      //   provideRouteAlternatives: false,
-      //   travelMode: google.maps.DirectionsTravelMode.DRIVING,
-      //   unitSystem: google.maps.DirectionsUnitSystem.IMPERIAL
-      // }
-
-      // directionsService.route(request, function(result, status) {
-      //    if (status == google.maps.DirectionsStatus.OK) {
-      //      directionsDisplay.setDirections(result);
-      //    }
-      //    else {
-      //      // TODO: log this on the screen somehow
-      //      console.log(status);
-      //    }
-      // });
     }
 
   </script>
