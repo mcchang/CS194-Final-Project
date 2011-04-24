@@ -114,7 +114,7 @@
       var request = getDirectionsRequest(origin, destination, options);
       directionsService.route(request, function(result, status) {
          if (status == google.maps.DirectionsStatus.OK) {
-           var distance = results.routes[0].legs[0].distance.value;
+           var distance = result.routes[0].legs[0].distance.value;
            return distance;
          }
          else {
@@ -125,7 +125,7 @@
     }
 
     function updateDirections(newOrigin, newDestination, newOptions) {
-      var request = getDirectionsRequest(newOrigin, newDestination, options);
+      var request = getDirectionsRequest(newOrigin, newDestination, newOptions);
       directionsService.route(request, function(result, status) {
          if (status == google.maps.DirectionsStatus.OK) {
            directionsDisplay.setDirections(result);
@@ -136,9 +136,11 @@
          }
       });
     }
-
+    
     function closestPoliceStation(location) {
       numPoliceStations = policeStations.length; 
+      console.log(policeStations);
+      console.log("num police stations: " + numPoliceStations)
 
       var closestStation;
       var closestDistance = Number.MAX_VALUE;
@@ -146,9 +148,11 @@
 
       // TODO: concurrency issues? (asynch)
       for (var i = 0; i < numPoliceStations; i++) {
-        var curStation = numPoliceStations[i];
+        var curStation = policeStations[i];
         var distance = getDistance(curStation, location, {});
+        console.log("distance: " + distance);
         if (distance < closestDistance) {
+          console.log("in here");
           closestDistance = distance;
           closestStation = curStation;
         }
@@ -167,6 +171,8 @@
         newIncident = new Incident(location, 5, "hate crime", "monday");
         incidents.push(newIncident);
         closestPoliceStation = closestPoliceStation(location);
+        console.log("closest station");
+        console.log(closestPoliceStation);
         updateDirections(closestPoliceStation, location, {});
       }
       else {
