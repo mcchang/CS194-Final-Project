@@ -33,46 +33,99 @@
     var directionsDisplay;
     var directionsService = new google.maps.DirectionsService();
     var map;
+    var incidents = new Array();
+    var fireStations;
+    var policeStations;
 
-    function reset_map() {
+    // TODO: get location of closest fire station in csv/json?
+    function Incident(location, distance, incident, dayOfWeek) {
+      this.location = location;
+      this.distance = distance;
+      this.incident = incident;
+      this.dayOfWeek = dayOfWeek;
+    }
+
+    // TODO: move this stuff into another js file http://www.dustindiaz.com/namespace-your-javascript/
+    function fetchCoords(data_endpoint) {
+      var features;
+      var req = new XMLHttpRequest();
+      req.open('GET', data_endpoint, false);
+      req.send(null);
+      if (req.status == 200) {
+         console.log(req.responseText);
+         coords = eval('(' + req.responseText + ')');
+         return coords;
+      }
+      else
+        console.log("Error loading page\n");
+    }
+
+    function addMarker(position, map, image) {
+      var marker = new google.maps.Marker({
+          position: position,
+          animation: google.maps.Animation.DROP,
+          map: map,
+          icon: image
+      });
+    }
+
+    function addMarkerHelper(position, map, image) {
+      return function() {
+        addMarker(position, map, image);
+      }   
+    }
+
+    function dropMarkers(positionArray, map, image) {
+      for (var i = 0; i < positionArray.length; i++) {
+        setTimeout(addMarkerHelper(positionArray[i], map, image), i * 200);
+      }
+    }
+
+    function resetMap() {
       var blank_result = new Object();
       blank_result.routes = new Array();
       directionsDisplay.setDirections(blank_result);
     }
 
-    function initialize() {
-      // TODO: chooser for start fire station (or maybe change dynamically
-      // based on sources
-      var seattle = new google.maps.LatLng(47.629, -122.330);
-
-      var mapOptions = {
-        zoom: 11,
-        center: seattle,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-      };
-
-      var map = new google.maps.Map(document.getElementById("map_canvas"),
-          mapOptions);
-      directionsDisplay = new google.maps.DirectionsRenderer();
-      directionsDisplay.setMap(map);
-      directionsDisplay.setPanel(document.getElementById("directions_panel"));
+    function getDirectionsRequest(origin, destination, options) {
+      var waypoints;
+      if (options['waypoints'])
+        waypoints = _.map(options['waypoints'], function(wp) {
+            return { 
+              location: new google.maps.LatLng(wp[0], wp[1]),
+              stopover: true
+            };
+        });
+      else
+        waypoints = new Array();
 
       var request = {
-        origin: "Seattle, WA",
-        destination: "Bellevue, WA",
-        waypoints: [
-          {
-            location:"Shoreline, WA", 
-            stopover:true
-          },{
-            location:"Kirkland, WA",
-            stopover:true
-          }],
+        origin: origin, 
+        destination: destination,
+        waypoints: waypoints,
         provideRouteAlternatives: false,
         travelMode: google.maps.DirectionsTravelMode.DRIVING,
         unitSystem: google.maps.DirectionsUnitSystem.IMPERIAL
       }
+      return request;
+    }
 
+    function getDistance(origin, destination, options) {
+      var request = getDirectionsRequest(origin, destination, options);
+      directionsService.route(request, function(result, status) {
+         if (status == google.maps.DirectionsStatus.OK) {
+           var distance = results.routes[0].legs[0].distance.value;
+           return distance;
+         }
+         else {
+           // TODO: log this on the screen somehow
+           console.log(status);
+         }
+      });
+    }
+
+    function updateDirections(newOrigin, newDestination, newOptions) {
+      var request = getDirectionsRequest(newOrigin, newDestination, options);
       directionsService.route(request, function(result, status) {
          if (status == google.maps.DirectionsStatus.OK) {
            directionsDisplay.setDirections(result);
@@ -84,6 +137,100 @@
       });
     }
 
+    function closestPoliceStation(location) {
+      numPoliceStations = policeStations.length; 
+
+      var closestStation;
+      var closestDistance = Number.MAX_VALUE;
+      var distances = new Array(numPoliceStations);
+
+      // TODO: concurrency issues? (asynch)
+      for (var i = 0; i < numPoliceStations; i++) {
+        var curStation = numPoliceStations[i];
+        var distance = getDistance(curStation, location, {});
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestStation = curStation;
+        }
+      }
+      return closestStation;
+    }
+
+    function addIncident(location, map) {
+      var marker = new google.maps.Marker({
+          position: location, 
+          map: map
+      });
+      // map.setCenter(location);
+      if (incidents.length == 0) {
+        // TODO: push/add stuff in order of priority (need to determine)
+        newIncident = new Incident(location, 5, "hate crime", "monday");
+        incidents.push(newIncident);
+        closestPoliceStation = closestPoliceStation(location);
+        updateDirections(closestPoliceStation, location, {});
+      }
+      else {
+        console.log("IMPLEMENT ME");
+      }
+    }
+    
+    function initialize() {
+      // TODO: chooser for start fire station (or maybe change dynamically
+      // based on sources
+      var seattle = new google.maps.LatLng(47.629, -122.330);
+
+
+      var mapOptions = {
+        zoom: 11,
+        center: seattle,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+      };
+
+      var map = new google.maps.Map(document.getElementById("map_canvas"),
+          mapOptions);
+
+      // TODO: load fire stations too?
+      policeCoords = fetchCoords('data/police_stations.json');
+      policeStations = _.map(policeCoords, function(coord) {
+          return new google.maps.LatLng(coord[0], coord[1]);
+      });
+      dropMarkers(policeStations, map, '{{ static_url("images/police_station.png") }}');
+
+      google.maps.event.addListener(map, 'click', function(event) {
+        addIncident(event.latLng, map);
+      });
+      
+      directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay.setMap(map);
+      directionsDisplay.setPanel(document.getElementById("directions_panel"));
+
+      // var request = {
+      //   origin: "Seattle, WA",
+      //   destination: "Bellevue, WA",
+      //   waypoints: [
+      //     {
+      //       location:"Shoreline, WA", 
+      //       stopover:true
+      //     },{
+      //       location:"Kirkland, WA",
+      //       stopover:true
+      //     }],
+      //   provideRouteAlternatives: false,
+      //   travelMode: google.maps.DirectionsTravelMode.DRIVING,
+      //   unitSystem: google.maps.DirectionsUnitSystem.IMPERIAL
+      // }
+
+      // directionsService.route(request, function(result, status) {
+      //    if (status == google.maps.DirectionsStatus.OK) {
+      //      directionsDisplay.setDirections(result);
+      //    }
+      //    else {
+      //      // TODO: log this on the screen somehow
+      //      console.log(status);
+      //    }
+      // });
+    }
+
   </script>
 {% end %}
 
@@ -91,7 +238,7 @@
   <body onload="initialize()">
     <h1>Dispatch Directions</h1>
     <div id="map_canvas"></div>
-    <button type="reset" onclick="reset_map()">Reset</button>
+    <button type="reset" onclick="resetMap()">Reset</button>
     <div id="directions_panel"></div>
   </body>
 {% end %}
