@@ -148,8 +148,7 @@
            return distance;
          }
          else {
-           // TODO: log this on the screen somehow
-           console.log(status);
+           $("div#status").text(status);
          }
       });
     }
@@ -161,8 +160,7 @@
            directionsDisplay.setDirections(result);
          }
          else {
-           // TODO: log this on the screen somehow
-           console.log(status);
+           $("div#status").text(status);
          }
       });
     }
@@ -196,8 +194,7 @@
             getClosestSleeper();
           }
           else {
-            // TODO: log this on the screen somehow
-            console.log(status);
+           $("div#status").text(status);
           }
         });
       });
@@ -249,6 +246,7 @@
   <body onload="initialize()">
     <h1>Dispatch Directions</h1>
     <div id="map_canvas"></div>
+    <div id="status"></div>
     <button type="reset" onclick="resetMap()">Reset</button>
     <div id="directions_panel"></div>
   </body>
