@@ -55,7 +55,7 @@
     }
     
     Incident.prototype.priority = function() {
-      return 1.222516007 + this.distance * -3.415511560 + coeffs[this.day] + coeffs[this.type];
+      return 1.222516007 + this.distance * 3.415511560 + coeffs[this.day] + coeffs[this.type];
     }
 
     Array.prototype.sortStationsByDistance = function() {
@@ -63,7 +63,7 @@
     }
 
     Array.prototype.sortIncidentsByPriorityDescending = function() {
-      return this.sort(function(a,b) { return a.priority() - b.priority(); });
+      return this.sort(function(a,b) { return b.priority() - a.priority(); });
     }
 
     // TODO: move this stuff into another js file http://www.dustindiaz.com/namespace-your-javascript/
@@ -210,11 +210,6 @@
     }
 
     function addIncident(location, map) {
-      var marker = new google.maps.Marker({
-          position: location, 
-          map: map
-      });
-      markers.push(marker);
 
       // Get values of dropdowns
       var day = $("select#select_day option:selected").text();
@@ -230,6 +225,12 @@
           minDistance = distance;
       }
       var newIncident = new Incident(location, minDistance, type, day);
+      var marker = new google.maps.Marker({
+          position: location, 
+          map: map,
+          title: "Priority: " + newIncident.priority().toString()
+      });
+      markers.push(marker);
       incidents.push(newIncident);
       incidents.sortIncidentsByPriorityDescending();
       getNewDirectionsForIncidents(incidents);
