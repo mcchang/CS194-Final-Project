@@ -46,11 +46,15 @@
     var distances = new Array();
     var seattle = new google.maps.LatLng(47.629, -122.330);
 
-    function Incident(location, distance, incident, dayOfWeek) {
+    function Incident(location, distance, type, day) {
       this.location = location;
       this.distance = distance;
-      this.incident = incident;
-      this.dayOfWeek = dayOfWeek;
+      this.type = type;
+      this.day = day;
+    }
+    
+    Incident.prototype.priority = function() {
+      return 1.222516007 + this.distance * -3.415511560 + coeffs[this.day] + coeffs[this.type];
     }
 
     Array.prototype.sortStationsByDistance = function() {
@@ -201,17 +205,28 @@
       });
     }
 
+    function priorityScore(distance, day, type) {
+      return 1.222516007 + distance * -3.415511560 + coeffs[day] + coeffs[type];
+    }
+
     function addIncident(location, map) {
       var marker = new google.maps.Marker({
           position: location, 
           map: map
       });
+      // Get values of dropdowns
+      var day = $("select#select_day option:selected").text();
+      var type = $("select#select_type option:selected").text();
+      var score = priorityScore(distance, day, type);
+        
       markers.push(marker);
-      var newIncident = new Incident(location, 5, "hate crime", "monday");
+      var distance = 0.11;
+      var newIncident = new Incident(location, distance, type, day);
       incidents.push(newIncident);
       incidents.sortIncidentsByPriorityDescending();
       getNewDirectionsForIncidents(incidents);
     }
+    
 
     function initialize() {
 
@@ -251,7 +266,7 @@
     <div id="map_canvas"></div>
     <div id="status"></div>
     <p>Select Day of Week and Type of Crime, then click location on map</p>
-    <select>
+    <select id="select_day">
       <option>Monday</option>
       <option>Tuesday</option>
       <option>Wednesday</option>
@@ -260,7 +275,7 @@
       <option>Saturday</option>
       <option>Sunday</option>
     </select>
-    <select>
+    <select id="select_type">
       <option>Animal Complaints</option>
       <option>Accident Investigation</option>
       <option>Arrest</option>
