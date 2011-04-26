@@ -36,6 +36,7 @@
     var directionsDisplay;
     var directionsService = new google.maps.DirectionsService();
     var map;
+    var coeffs;
     var incidents = new Array();
     var markers = new Array();
     var fireStations;
@@ -61,7 +62,7 @@
     }
 
     // TODO: move this stuff into another js file http://www.dustindiaz.com/namespace-your-javascript/
-    function fetchCoords(data_endpoint) {
+    function fetchData(data_endpoint) {
       var features;
       var req = new XMLHttpRequest();
       req.open('GET', data_endpoint, false);
@@ -74,7 +75,7 @@
       else
         console.log("Error loading page\n");
     }
-
+    
     function addMarker(position, map, image) {
       var marker = new google.maps.Marker({
           position: position,
@@ -223,8 +224,10 @@
       map = new google.maps.Map(document.getElementById("map_canvas"),
           mapOptions);
 
-      // TODO: load fire stations too
-      policeCoords = fetchCoords('data/police_stations.json');
+
+      coeffs = fetchData('data/coefficients.json');
+
+      policeCoords = fetchData('data/police_stations.json');
       policeStations = _.map(policeCoords, function(coord) {
           return new google.maps.LatLng(coord[0], coord[1]);
       });
@@ -247,6 +250,57 @@
     <h1>Dispatch Directions</h1>
     <div id="map_canvas"></div>
     <div id="status"></div>
+    <p>Select Day of Week and Type of Crime, then click location on map</p>
+    <select>
+      <option>Monday</option>
+      <option>Tuesday</option>
+      <option>Wednesday</option>
+      <option>Thursday</option>
+      <option>Friday</option>
+      <option>Saturday</option>
+      <option>Sunday</option>
+    </select>
+    <select>
+      <option>Animal Complaints</option>
+      <option>Accident Investigation</option>
+      <option>Arrest</option>
+      <option>Assaults</option>
+      <option>Auto Thefts</option>
+      <option>Bike</option>
+      <option>Burglary</option>
+      <option>Car Prowl</option>
+      <option>Disturbances</option>
+      <option>Drive By</option>
+      <option>Failure To Register</option>
+      <option>False Alarms</option>
+      <option>Fraud Calls</option>
+      <option>Harbor Calls</option>
+      <option>Hazards</option>
+      <option>Homicide</option>
+      <option>Lewd Conduct</option>
+      <option>Liquor Violations</option>
+      <option>Mental Health</option>
+      <option>Miscellaneous Misdemeanors</option>
+      <option>Narcotics Complaints</option>
+      <option>Nuisance And Mischief</option>
+      <option>Other Property</option>
+      <option>Other Vice</option>
+      <option>Person Down/injury</option>
+      <option>Persons Lost Found Missing</option>
+      <option>Property Damage</option>
+      <option>Property Missing Found</option>
+      <option>Prostitution</option>
+      <option>Prowler</option>
+      <option>Reckless Burning</option>
+      <option>Robbery</option>
+      <option>Shoplifting</option>
+      <option>Suspicious Circumstances</option>
+      <option>Threats And Harassment</option>
+      <option>Traffic Related Calls</option>
+      <option>Trespass</option>
+      <option>Vice Calls</option>
+      <option>Weapons Calls</option>
+    </select>
     <button type="reset" onclick="resetMap()">Reset</button>
     <div id="directions_panel"></div>
   </body>
