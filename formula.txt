@@ -1,0 +1,43 @@
+1.222516007 + distance* -3.415511560 +dayOfWeekMon*0.031616645 + dayOfWeekSat * -0.004049438 
+                          dayOfWeekSun                         dayOfWeekThurs 
+                           0.012100634                           -0.003456486 
+                          dayOfWeekTue                           dayOfWeekWed 
+                           0.033887895                            0.008306356 
+                 typeAnimal Complaints                             typeArrest 
+                          -0.087147494                            0.089252413 
+                          typeAssaults                        typeAuto Thefts 
+                           0.026159034                           -0.043101265 
+                              typeBike                           typeBurglary 
+                          -0.116021305                           -0.010357059 
+                         typeCar Prowl                       typeDisturbances 
+                           0.012254868                            0.272679573 
+              typeDrive By (no Injury) typeFailure To Register (sex Offender) 
+                           0.059674382                           -0.118519963 
+                      typeFalse Alarms                        typeFraud Calls 
+                           0.014390996                           -0.017115168 
+                      typeHarbor Calls                            typeHazards 
+                          -0.036098709                           -0.092944909 
+                          typeHomicide                       typeLewd Conduct 
+                          -0.064133178                           -0.137847476 
+                 typeLiquor Violations                      typeMental Health 
+                           0.795104124                            0.043100756 
+        typeMiscellaneous Misdemeanors               typeNarcotics Complaints 
+                           0.321079558                            0.271259639 
+             typeNuisance And Mischief                     typeOther Property 
+                           0.138776674                            0.035212726 
+                        typeOther Vice                 typePerson Down/injury 
+                          -0.149570389                           -0.100031959 
+        typePersons Lost Found Missing                    typeProperty Damage 
+                          -0.042767849                           -0.062738293 
+            typeProperty Missing Found                       typeProstitution 
+                           0.043036486                            0.148871236 
+                           typeProwler                   typeReckless Burning 
+                          -0.115174802                           -0.106875232 
+                           typeRobbery                        typeShoplifting 
+                          -0.057997657                            1.609194492 
+          typeSuspicious Circumstances             typeThreats And Harassment 
+                           0.260639167                           -0.040538443 
+             typeTraffic Related Calls                           typeTrespass 
+                           0.265691506                            0.305160061 
+                        typeVice Calls                      typeWeapons Calls 
+                          -0.108686539                           -0.104408348
