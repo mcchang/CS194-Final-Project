@@ -40,6 +40,7 @@
     var incidents = new Array();
     var markers = new Array();
     var fireStations;
+    var policeCoords;
     var policeStations;
     var closestStation;
     var closestDistance;
@@ -62,7 +63,7 @@
     }
 
     Array.prototype.sortIncidentsByPriorityDescending = function() {
-      return this.sort(function(a,b) { return a.priority - b.priority; });
+      return this.sort(function(a,b) { return a.priority() - b.priority(); });
     }
 
     // TODO: move this stuff into another js file http://www.dustindiaz.com/namespace-your-javascript/
@@ -179,7 +180,6 @@
       var firstIncidentLoc = incidentLocations[0];
       var lastIncidentLoc = incidentLocations[incidentLocations.length - 1];
       var waypoints = incidentLocations.slice(0, incidentLocations.length - 1);
-      // var waypoints = [ seattle ];
 
       function getClosestSleeperCallback() {
         distances.sortStationsByDistance();
@@ -214,14 +214,22 @@
           position: location, 
           map: map
       });
+      markers.push(marker);
+
       // Get values of dropdowns
       var day = $("select#select_day option:selected").text();
       var type = $("select#select_type option:selected").text();
       var score = priorityScore(distance, day, type);
-        
-      markers.push(marker);
-      var distance = 0.11;
-      var newIncident = new Incident(location, distance, type, day);
+
+      // Calculate euclidean distance to each station (for estimate)
+      var minDistance = Number.MAX_VALUE;
+      for (var i = 0; i < policeCoords.length; i++) {
+        var distance = Math.sqrt(Math.pow(location.lat() - policeCoords[i][0], 2) +
+            Math.pow(location.lng() - policeCoords[i][1], 2))
+        if (distance < minDistance)
+          minDistance = distance;
+      }
+      var newIncident = new Incident(location, minDistance, type, day);
       incidents.push(newIncident);
       incidents.sortIncidentsByPriorityDescending();
       getNewDirectionsForIncidents(incidents);
