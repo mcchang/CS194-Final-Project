@@ -23,7 +23,7 @@
 
 {% block local_js %}
   <script type="text/javascript"
-      src="http://maps.google.com/maps/api/js?sensor=false">
+      src="http://maps.google.com/maps/api/js?v=3.4&sensor=false">
   </script>
   <script type="text/javascript"
       src="{{ static_url("underscore/underscore.js") }}">
@@ -225,11 +225,33 @@
           minDistance = distance;
       }
       var newIncident = new Incident(location, minDistance, type, day);
+
+      var contentString = '<div id="content">'+
+          '<div id="siteNotice">'+
+          '</div>'+
+          '<h1 id="firstHeading" class="firstHeading">Incident</h1>'+
+          '<div id="bodyContent">'+
+          '<ul><li>Type: ' + type + '</li>' +
+          '<li>Day: ' + day + '</li>' +
+          '<li>Priority: ' + newIncident.priority().toString() + '</li></ul>' +
+          '</div>'+
+          '</div>';
+
+      var infowindow = new google.maps.InfoWindow({
+          content: contentString
+      });
+
       var marker = new google.maps.Marker({
           position: location, 
           map: map,
           title: "Priority: " + newIncident.priority().toString()
       });
+      marker.setZIndex(1000000000);
+
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map,marker);
+      });
+
       markers.push(marker);
       incidents.push(newIncident);
       incidents.sortIncidentsByPriorityDescending();
