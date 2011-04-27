@@ -55,7 +55,7 @@
     }
     
     Incident.prototype.priority = function() {
-      return 1.222516007 + this.distance * 3.415511560 + coeffs[this.day] + coeffs[this.type];
+      return 1.222516007 + this.distance * -3.415511560 + coeffs[this.day] + coeffs[this.type];
     }
 
     Array.prototype.sortStationsByDistance = function() {
